@@ -1,0 +1,38 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block title %}{{ request.flatpage.get_title }}{% endblock %}
+{% block description %}{{ request.flatpage.description }}{% endblock %}
+{% block keywords %}{{ request.flatpage.keywords }}{% endblock %}
+
+{% block content %}
+	{% FrontAdmin "/admin/news/newsarticle/" %}
+	{% if news_list %}
+		{% for item in news_list %}
+			<div class="news">
+				<small>{{ item.get_created_at|date:"d.m.Y" }}</small>
+				<h4>
+					<a href="{{ item.get_item_url }}">
+						{{ item.get_title }}
+					</a>
+				</h4>
+				{% if item.get_image %}
+					<a class="thumbnail" href="{{ item.get_item_url }}" style="float:left">
+						{% thumbnail item.get_image "160x120" crop="center" format="PNG" as im %}<!--их размер на сайте-->
+							<img src="{{ im.url }}" alt="{{ item.get_title }}" />
+						{% endthumbnail %}
+					</a>
+				{% else %}
+						<img src="{{ MEDIA_URL }}image/noimage.jpg" width="160" height="120"/><!--их размер на сайте-->
+				{% endif %}
+					
+				<p>{{ item.get_announcement }}</p>
+				<p style="text-align:rigth;clear:both"><a href="{{ item.get_item_url }}">Читать далее</a></p>
+			</div>
+		{% endfor %}
+		
+		{% include "paginate.html" %}
+	{% endif %}
+{% endblock %}

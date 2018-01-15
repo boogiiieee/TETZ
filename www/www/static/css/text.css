@@ -1,0 +1,14 @@
+/* ТЕКСТ */
+	@font-face { font-family: 'Lucida Sans Unicode'; src: url('/static/font/lucida_sans_unicode.eot'); src: url('/static/font/lucida_sans_unicode.eot?#iefix') format('embedded-opentype'), url('/static/font/lucida_sans_unicode.svg#Lucida Sans Unicode') format('svg'), url('/static/font/lucida_sans_unicode.woff') format('woff'), url('/static/font/lucida_sans_unicode.ttf') format('truetype'); font-weight: normal; font-style: normal;}
+	html,body{font-family: "Lucida Sans Unicode",Arial, Verdana, sans-serif, Helvetica;font-size: 13px;line-height: 20px;min-width:1000px;}
+
+	h1, #page h1 a, a:link, a:visited , h5, h4{color: #4C8C79;}
+	h1, #page h1 a, a:link, a:visited {color: #4C8C79;}
+	a:hover{color: #3990BD;}
+	h1 {font-size: 22px;	line-height: 22px;font-weight: normal;}
+	h3{font-size: 22px;	line-height: 22px;}
+	h4{font-size: 22px;text-align:center;font-weight: normal;}
+	h5 {font-size: 16px;font-weight: normal;}
+	p{margin-bottom:5px;}
+	td{vertical-align:top; padding:5px;}
+/* END ТЕКСТ */

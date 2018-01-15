@@ -1,0 +1,31 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block content %}
+	{% FrontAdmin "/admin/catalog/category/" %}
+	{% if category_list %}
+		<div class="catalog">
+			{% for item in category_list %}
+				<div class="category" style="clear:both">
+					<h4>
+						<a href="{{ item.get_category_url }}">
+							{{ item.get_title }}
+						</a>
+					</h4>
+					{% if item.get_image %}
+						<a class="thumbnail" href="{{ item.get_category_url }}" style="float:left">
+							{% thumbnail item.get_image "65x65" crop="center" format="PNG" as im %}<!--их размер на сайте-->
+								<img src="{{ im.url }}" alt="{{ item.get_title }}" />
+							{% endthumbnail %}
+						</a>
+					{% else %}
+							<img src="{{ MEDIA_URL }}image/noimage.jpg" width="160" height="120"/><!--их размер на сайте-->
+					{% endif %}						
+					<p>{{ item.get_announcement }}</p>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

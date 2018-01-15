@@ -1,0 +1,64 @@
+{% extends "default.html" %}
+
+{% load thumbnail banners_tags front_admin_tags %}
+
+{% block breadcrumbs_all %}{% endblock %}
+
+{% block extra_media %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}js/slider/css/style.css">
+	<script src="{{ STATIC_URL }}js/slider/js/jquery.slides.min.js"></script>
+	
+{% endblock %}
+
+{% block content %}
+	<div class="polosa"></div>
+	{% FrontAdmin '/admin/banners/banner/' %}
+	{% get_banners_list %}
+	{% if banners_list %}
+		<div id="slider">
+			<div class="l_t_bg"><div class="r_t_bg"><div class="m_t_bg"></div></div></div>
+			<div class="l_m_bg">
+				<div class="r_m_bg">
+					<div class="m_m_bg">
+						<div id="slides" {% if banners_list|length == 1  %}style="display:block"{% endif %}>
+							{% for banner in banners_list %}
+								<div class="row-fluid item {% if forloop.first %}active{% endif %}">
+									<div class="span9">
+										<h5>{{ banner.get_title }}</h5>
+										{% if banner.get_description %}
+											<p class="f_grey">{{ banner.get_description|safe }}</p>
+										{% endif %}
+									</div>
+									<div class="span3">
+										{% thumbnail banner.get_image "150x150" format="PNG" as im %}
+											<img style="margin-top:50px;" src="{{ im.url }}" title="{{ banner.get_title }}" />
+										{% endthumbnail %}
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="l_b_bg"><div class="r_b_bg"><div class="m_b_bg"></div></div></div>
+		</div>
+		{% if banners_list|length > 1  %}
+			<script>
+				$(function(){
+					$("#slides").slidesjs({
+						responsive: true,
+						height:390,
+						play: {
+						  active: true,
+						  auto: true,
+						  swap: true,
+						  pauseOnHover: true,
+						},
+						slide: {speed: 2000},
+					});
+				});
+			</script>
+		{% endif %}
+	{% endif %}
+
+{% endblock %}

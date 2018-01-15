@@ -1,0 +1,26 @@
+{% extends "news/news.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block title %}{{ item_new.get_title }}{% endblock %}
+{% block description %}{{ item_new.description }}{% endblock %}
+{% block keywords %}{{ item_new.keywords }}{% endblock %}
+
+{% block flatpage %}{% endblock %}
+
+{% block breadcrumbs %}
+		<span><a href="/news/">Новости</a></span> <span class="icon-double-angle-right divider"></span>
+		<span class="active">{{ item_new.get_title }}</span>
+{% endblock %}
+
+{% block content %}
+	{% FrontAdmin item_new.get_admin_url %}
+	<div class="row-fluid">
+		<small>{{ item_new.get_created_at|date:"d.m.Y" }}</small>
+		<h1>{{ item_new.get_title }}</h1>
+		<div>{{ item_new.get_text|safe }}</div>
+		<a class="pull-right" href="/news/">Все новости</a>
+	</div>
+
+{% endblock %}

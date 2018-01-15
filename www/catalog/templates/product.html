@@ -1,0 +1,35 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block title %}{{ product.get_title }}{% endblock %}
+{% block description %}{{ product.description }}{% endblock %}
+{% block keywords %}{{ product.keywords }}{% endblock %}
+
+{% block flatpage %}{% endblock %}
+
+{% block content %}
+	{% FrontAdmin product.get_admin_url %}
+	<div class="product">
+		<h4>{{ product.get_title }}</h4>
+		
+		{% if product.get_code %}
+			<p>{{ product.get_code }}</p>
+		{% endif %}
+		
+		{% if product.get_image %}
+			{% thumbnail product.get_image "150x150" crop="center" format="PNG" as im %}
+				<img src="{{ im.url }}" alt="{{ product.get_title }}" />
+			{% endthumbnail %}
+		{% else %}
+			<img src="{{ MEDIA_URL }}image/noimage.jpg" width="160" height="120"/>
+		{% endif %}
+		
+		{% if product.get_file %}
+			<a href="{{ product.get_file.url }}">Скачать</a>
+		{% endif %}
+		
+		<p>{{ item.get_text|safe }}</p>
+	</div>
+{% endblock %}

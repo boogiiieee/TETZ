@@ -1,0 +1,34 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block title %}{{ category.get_title }}{% endblock %}
+{% block description %}{{ category.description }}{% endblock %}
+{% block keywords %}{{ category.keywords }}{% endblock %}
+
+{% block flatpage %}{% endblock %}
+
+{% block content %}
+	{% FrontAdmin "/admin/catalog/product/" %}
+	{% if product_list %}
+		<div class="productList">
+			{% for item in product_list %}
+				<div class="item" style="clear:both;margin-bottom:10px;height:65px">
+					<a href="{{ item.get_absolute_url }}">
+						{{ item.get_title }}
+					</a>
+					{% if item.get_image %}
+						<a class="thumbnail" href="{{ item.get_absolute_url }}">
+							{% thumbnail item.get_image "65x65" crop="center" format="PNG" as im %}<!--их размер на сайте-->
+								<img src="{{ im.url }}" alt="{{ item.get_title }}"  style="float:left"/>
+							{% endthumbnail %}
+						</a>
+					{% else %}
+							<img src="{{ MEDIA_URL }}image/noimage.jpg" width="65" height="65" style="float:left"/><!--их размер на сайте-->
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

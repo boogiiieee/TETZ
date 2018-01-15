@@ -1,0 +1,79 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block title %}{{ request.flatpage.get_title }}{% endblock %}
+{% block description %}{{ request.flatpage.description }}{% endblock %}
+{% block keywords %}{{ request.flatpage.keywords }}{% endblock %}
+
+{% block content_all %}
+	{% FrontAdmin "/admin/news/newsarticle/ %}
+	{% if news_list %}
+		<div id="slider" class="margin_b">
+			<div class="l_t_bg"><div class="r_t_bg"><div class="m_t_bg"></div></div></div>
+			<div class="l_m_bg">
+				<div class="r_m_bg">
+					<div class="m_m_bg">
+						<h5 class="margin_t0">Новости</h5>
+						<div class="accordion" id="accordion">
+							{% for item in news_list %}
+								<div class="accordion-group">
+									<div class="accordion-heading row-fluid">
+										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{ forloop.counter }}" href="#collapse{{ forloop.counter }}">
+											<span class="f_grey span2"><div class="border_r center">{{ item.get_created_at|date:"d.m.Y" }}</div></span>
+											<span class="span9"><h2>{{ item.get_title }}</h2></span>
+											<span class="span1 t_right"><i class="icon {% if not forloop.first %}icon-chevron-right{% else %}icon-chevron-down{% endif %}"></i></span>
+										</a>
+									</div>
+									<div id="collapse{{ forloop.counter }}" class="row-fluid accordion-body collapse {% if forloop.first %}in{% endif %}">
+										<div class="span10 offset2 accordion-inner">
+											<div class="row-fluid">
+												<div class="media">
+													{% if item.get_image %}
+														<a class="pull-left margin_min_r" href="{{ item.get_item_url }}" style="float:left">
+															{% thumbnail item.get_image "160x120" crop="center" format="PNG" as im %}<!--их размер на сайте-->
+																<img class="media-object" src="{{ im.url }}" alt="{{ item.get_title }}" />
+															{% endthumbnail %}
+														</a>
+													{% endif %}
+													<div class="media-body f_grey">
+														{{ item.get_announcement }}
+														<a class="pull-right" href="{{ item.get_item_url }}">Читать далее</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="l_b_bg"><div class="r_b_bg"><div class="m_b_bg"></div></div></div>
+		</div>
+		
+		{% include "paginate.html" %}
+	{% endif %}
+	{% block breadcrumbs_all %}
+		<div class="breadcrumbs margin_b">
+			<span><a href="/">Главная</a></span> <span class="icon-double-angle-right divider"></span>
+			{% block breadcrumbs %}
+				<span class="active">Новости</span>
+			{% endblock %}
+		</div>
+	{% endblock %}
+	{% block content %}
+		{% block flatpage %}
+			{% FrontAdmin request.flatpage.get_admin_url %}
+			<h1>{{ request.flatpage.title }}</h1>
+				{% if request.flatpage.content %}
+					<div class="row-fluid margin_b">
+						{{ request.flatpage.content|safe }}
+					</div>
+				{% endif %}
+		{% endblock %}
+	{% endblock %}
+{% endblock %}

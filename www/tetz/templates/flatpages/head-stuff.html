@@ -1,0 +1,26 @@
+{% extends "default.html" %}
+
+{% load thumbnail front_admin_tags headstuff_tags %}
+
+{% block content %}
+	{% FrontAdmin '/admin/headstuff/headstuff/' %}
+	{% get_headstuff_list %}
+	{% if headstuff_list|length %}
+		{% for gallery in headstuff_list %}
+			{% if forloop.counter0|divisibleby:"3" %}<div class="row-fluid">{% endif %}
+				<div class="span4 margin_min_b">
+					{% thumbnail gallery.get_image "260x240" crop="center" format="PNG" as im %}
+						<a class="lightbox" href="{{gallery.get_image.url}}" title="{{ gallery.get_title }}">
+							<img src="{{ im.url }}" title="{{ gallery.get_title }}" />
+						</a>
+					{% endthumbnail %}
+					<p class="t_center"><strong>{{ gallery.get_title }}</strong></p>
+					{% if gallery.get_description %}
+						<div class="t_center">{{ gallery.get_description }}</div>
+					{% endif %}
+				</div>
+			{% if forloop.counter|divisibleby:"3" or forloop.last %}</div>{% endif %}
+		{% endfor %}
+		<div style="clear:both;"></div>
+	{% endif %}
+{% endblock %}

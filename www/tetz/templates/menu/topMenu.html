@@ -1,0 +1,61 @@
+<!--шаблон вернего меню-->
+
+{% load front_admin_tags article_tags catalog_tags thumbnail %}
+{% url 'catalog_url' as catalog_url %}
+
+{% get_catalog_list %}
+<ul class="nav navigation-menu">
+	<li class="navigation-menu-item {% ifequal request.flatpage.url '/' %}active{% endifequal %}"><a class="block" href="/"><span>Главная</span></a></li>
+	<li class="navigation-menu-item dropdown dropdown_1 {% ifequal request.flatpage.url '/about/' %}active{% endifequal %}">{% FrontAdmin "/admin/article/article1/" %}<a class="block" href="/about/"><span>О компании{% if article_list_10_tag %}<b class="caret"></b>{% endif %}</span></a>
+	{% if article_list_10_tag %}
+		<ul class="dropdown-menu">
+			{% for item in article_list_10_tag %}
+				<li class="{% ifequal request.flatpage.url item.get_absolute_url %}active{% endifequal %}">
+					<a class="block" href="{{ item.get_absolute_url }}">{{ item.get_title }} </a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	</li>
+	<li class="navigation-menu-item dropdown dropdown_1 {% ifequal active 'category' %}active{% endifequal %}">{% FrontAdmin "/admin/catalog/category/" %}<a class="block" href="{{ catalog_url }}"><span>Каталог{% if catalog_list_tag %}<b class="caret"></b>{% endif %}</span></a>
+		{% if catalog_list_tag %}	
+			<ul class="dropdown-menu">
+				{% for item in catalog_list_tag %}
+					<li class="{% ifequal category.id item.id %}active{% endifequal %}{% ifequal product.category.id item.id %}active{% endifequal %}">
+						<a class="block" href="{{ item.get_category_url }}">
+							{% if item.get_image %}
+								{% thumbnail item.get_image "40x40" crop="center" format="PNG" as im %}
+									<img class="margin_min_r" src="{{ im.url }}" alt="{{ item.get_title }}" />
+								{% endthumbnail %}
+							{% endif %}
+							{{ item.get_title }} 
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</li>
+	<li class="navigation-menu-item dropdown dropdown_1">{% FrontAdmin "/admin/article/article2/" %}<a class="block no_click" href="#" onclick="return false;"><span>Закупки{% if article_list_20_tag %}<b class="caret"></b>{% endif %}</span></a>
+	{% if article_list_20_tag %}
+		<ul class="dropdown-menu">
+			{% for item in article_list_20_tag %}
+				<li class="{% ifequal request.flatpage.url item.get_absolute_url %}active{% endifequal %}">
+					<a class="block" href="{{ item.get_absolute_url }}">{{ item.get_title }} </a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	</li>
+	<li class="navigation-menu-item dropdown dropdown_1">{% FrontAdmin "/admin/article/article3/" %}<a class="block no_click" href="#" onclick="return false;"><span>Акционерам{% if article_list_30_tag %}<b class="caret"></b>{% endif %}</span></a>
+		{% if article_list_30_tag %}
+			<ul class="dropdown-menu">
+				{% for item in article_list_30_tag %}
+					<li class="{% ifequal request.flatpage.url item.get_absolute_url %}active{% endifequal %}">
+						<a class="block" href="{{ item.get_absolute_url }}">{{ item.get_title }} </a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</li>
+	<li  class="navigation-menu-item {% ifequal request.flatpage.url '/vakancy/' %}active{% endifequal %}"><a class="block" href="/vakancy/"><span>Вакансии</span></a></li>
+</ul>

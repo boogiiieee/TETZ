@@ -1,0 +1,45 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block content %}
+	{% FrontAdmin "/admin/catalog/category/" %}
+	{% if category_list %}
+		<div id="slider" class="margin_b">
+			<div class="l_t_bg"><div class="r_t_bg"><div class="m_t_bg"></div></div></div>
+			<div class="l_m_bg">
+				<div class="r_m_bg">
+					<div class="m_m_bg">
+						<div class="catalog">
+							{% for item in category_list %}
+								{% if forloop.counter0|divisibleby:"2" %}<div class="row-fluid">{% endif %}
+									<div class="span6 margin_min_b">
+										<div class="media">
+											<a href="{{ item.get_category_url }}" class="hover d_block">
+												{% if item.get_image %}
+													<span class="pull-left margin_min_r d_block">
+														{% thumbnail item.get_image "65x65" crop="center" format="PNG" as im %}
+															<img class="media-object" src="{{ im.url }}" alt="{{ item.get_title }}" />
+														{% endthumbnail %}
+													</span>
+												{% endif %}
+												<span class="media-body d_block">
+													<span class="h7 d_block">{{ item.get_title }}</span>
+													<span class="d_block f_black">{{ item.get_announcement }}</span>
+												</span>
+												<span class="clearfix"></span>
+											</a>
+										</div>
+									</div>
+								{% if forloop.counter|divisibleby:"2" or forloop.last %}</div>{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="l_b_bg"><div class="r_b_bg"><div class="m_b_bg"></div></div></div>
+		</div>
+		
+	{% endif %}
+{% endblock %}

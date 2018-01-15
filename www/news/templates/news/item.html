@@ -1,0 +1,35 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block title %}{{ item.get_title }}{% endblock %}
+{% block description %}{{ item.description }}{% endblock %}
+{% block keywords %}{{ item.keywords }}{% endblock %}
+
+{% block flatpage %}{% endblock %}
+
+{% block content %}
+	{% FrontAdmin item.get_admin_url %}
+	<div class="newsItem">
+		<h1>{{ item.get_title }}</h1>
+			<small>{{ item.get_created_at|date:"d.m.Y" }}</small>
+				<div>
+					{% if item.get_image %}
+						<a class="thumbnail" href="{{ item.image.url }}" style="float:left">
+							{% thumbnail item.get_image "150x150" crop="center" format="PNG" as im %}
+								<img src="{{ im.url }}" alt="{{ item.get_title }}" />
+							{% endthumbnail %}
+						</a>
+					{% else %}
+						<img class="media-object" src="{{ MEDIA_URL }}image/no-image-150x150.png" />
+					{% endif %}
+				</div>
+				<p>{{ item.get_text|safe }}</p>
+	</div>
+	
+	<div style="clear:both">
+		<br>
+		<a href="/news/">&laquo; Все новости</a>
+	</div>
+{% endblock %}

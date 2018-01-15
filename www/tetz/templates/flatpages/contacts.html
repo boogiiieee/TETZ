@@ -1,0 +1,20 @@
+{% extends "default.html" %}
+
+{% load front_admin_tags %}
+{% load map2gis_tags %}
+
+{% block extra_media %}
+	{% if request.config.is_active_map %}
+		{% media_map2gis %}
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+	{% FrontAdmin "/admin/configuration/configmodel/1/" %}
+	{% if request.config.is_active_map %}
+		<div class="map row-fluid">			
+			{% get_map2gis request.config.address "100%" "300px" %}
+		</div>
+	{% endif %}
+	
+{% endblock %}

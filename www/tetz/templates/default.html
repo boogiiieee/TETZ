@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+{% load thumbnail %}
+{% load copyrigth_tags  map2gis_tags simpleblocks_tags front_admin_tags news_tags article_tags %}
+
+{% url 'catalog_url' as catalog_url %}
+
+<html>
+
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
+		<title>{% block title %}{{ request.flatpage.get_title }}{% endblock %}</title>
+		<meta name="description" content="{% block description %}{{ request.flatpage.get_description }}{% endblock %}" />
+		<meta name="keywords" content="{% block keywords %}{{ request.flatpage.get_keywords }}{% endblock %}" />
+		
+		<link href="{{ STATIC_URL }}favicon.ico" rel="icon" />
+		<meta name="author" content="web-aspect.ru">
+		
+		<script src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"></script>
+		<link rel="stylesheet" media="screen" href="{{ STATIC_URL }}js/bootstrap/css/bootstrap.min.css">
+		<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap/js/bootstrap.min.js"></script>
+		<script src="{{ STATIC_URL }}js/bootstrap/plugin/bootstrap-carousel.js"></script>
+		<link rel="stylesheet" href="{{ STATIC_URL }}js/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" type="text/css">
+		
+		<link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}js/lightbox/css/jquery.lightbox-0.5.css">
+		<script type="text/javascript" src="{{ STATIC_URL }}js/lightbox/js/jquery.lightbox-0.5.min.js"></script>
+
+		<link rel="stylesheet" media="screen" href="{{ STATIC_URL }}css/style.css">
+		
+		<script>
+			$(function(){
+				$('a.lightbox').lightBox();
+			});
+		</script>
+		{% block extra_media %}{% endblock %}
+	</head>
+		
+	<body id="page">
+		{% get_article_list 10 'article_list_10_tag' %}
+		{% get_article_list 20 'article_list_20_tag' %}
+		{% get_article_list 30 'article_list_30_tag' %}
+		
+		<div class="navbar_bg">
+			<div class="navbar_bg_inner">
+				<div class="navbar navbar-static-top">
+					<div class="navbar-inner">
+						<div class="container">
+							<a class="brand" href="/" title="{{ request.config.title }}"></a>
+							<div class="nav pos_rel">
+								{% include "menu/topMenu.html" %}
+							</div> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="page_body">
+			<div class="container">
+				<div class="row-fluid">
+					<div class="span3" id="left_block">
+						<div class="t_bg">
+							<div class="b_bg">
+								<div class="m_bg">
+									<div id="left_menu">
+										<div class="l_t_bg">
+											<div class="r_t_bg">
+												<div class="m_t_bg">
+												</div>
+											</div>
+										</div>
+										<div class="l_m_bg">
+											<div class="r_m_bg">
+												<div class="m_m_bg">
+													{% include "menu/leftMenu.html" %}
+												</div>
+											</div>
+										</div>
+										<div class="l_b_bg">
+											<div class="r_b_bg">
+												<div class="m_b_bg">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row-fluid">
+										{% get_news_list %}
+										{% if news_list_tag %}
+											<h4>Новости</h4>
+											<div class="polosa_min"></div>
+											<ul class="f_grey">
+											{% for item in news_list_tag %}
+												<li class="margin_min_b">
+													<span>{{ item.get_created_at|date:"d.m.Y" }}</span><br/>
+													<a href="{{ item.get_item_url }}" title="{{ item.get_title }}">{{ item.get_title }}</a>
+													{% if item.get_announcement %}
+														<div>{{ item.get_announcement|striptags|truncatechars:'80' }}</div>
+													{% endif %}
+													<a href="{{ item.get_item_url }}" title="Подробнее">Подробнее...</a>
+												</li>
+											{% endfor %}
+											</ul>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="span9">
+						{% block content_all %}
+							{% block breadcrumbs_all %}
+								<div class="breadcrumbs margin_b">
+									<span><a href="/">Главная</a></span> <span class="icon-double-angle-right divider"></span>
+									{% block breadcrumbs %}
+										<span class="active">{{ request.flatpage.title }}</span>
+									{% endblock %}
+								</div>
+							{% endblock %}
+							{% block flatpage %}
+								{% FrontAdmin request.flatpage.get_admin_url %}
+								<h1>{{ request.flatpage.title }}</h1>
+								{% if request.flatpage.content %}
+									<div class="row-fluid margin_b">
+										{{ request.flatpage.content|safe }}
+									</div>
+								{% endif %}
+							{% endblock %}
+							
+							{% block content %}{% endblock %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<footer>
+			<div class="container">
+				<div class="row-fluid margin_b">
+					<div class="span6">
+						{% FrontAdmin "/admin/simpleblocks/block/1" %}
+						{% get_simpleblock 1 %}
+					</div>
+					<div class="span6">
+						<div class="t_bg">
+						</div>
+						<div class="m_bg">
+							<div id="bottom_menu">
+								<h3>Меню</h3>
+								{% include "menu/bottomMenu.html" %}
+							</div>
+						</div>
+						<div class="b_bg">
+						</div>
+					</div>
+				</div>
+				<script>
+					$(function(){
+					   $('a.anchor').click(function(){
+							var target = $(this).attr('href');
+							$('html, body').animate({scrollTop: $(target).offset().top}, 300);
+							return false; 
+					   }); 
+					});
+				</script>
+				<div class="row-fluid margin_b pos_r">
+					<center>© {% get_copyright 1942 %}. {% FrontAdmin "/admin/configuration/configmodel/1/" %}{{ request.config.title }}.</center>
+					<center><a href="http://web-aspect.ru" title="Создание сайта" target="_blank">Создание сайта: Web-aspect</a></center>
+					<a class="anchor" href="#page"></a>
+				</div>
+			</div>
+		</footer>
+		<script>
+			$('.dropdown_1').hover(
+				function(){
+					$(this).find('.dropdown-menu').first().show();
+				},
+				function(){
+					$(this).find('.dropdown-menu').first().hide()
+				}
+			);
+			
+			$(document).ready(function(){
+				$("#left_menu li.active").each(function(indx, element){
+					$(element).parents('li').addClass('active');
+					$(element).parents('.parent').find('.arrow').removeClass('icon-caret-down').removeClass('icon-caret-left').addClass('icon-caret-down');
+				});
+				$(".navbar .navigation-menu li.active").each(function(indx, element){
+					$(element).parents('li').addClass('active');
+				});
+			});
+
+			
+			$('#left_menu .parent a').hover(
+				function(){
+					var p = $(this).parent('li');
+					var a = p.find('.arrow').first();
+					
+					if (a.hasClass('icon-caret-left'))
+						{a.removeClass('icon-caret-left').addClass('icon-caret-down');}
+				},
+				function(){
+					var p = $(this).parent('li');
+					var a = p.find('.arrow').first();
+					if (a.hasClass('icon-caret-down')){
+						if (!p.hasClass('active'))
+							{a.removeClass('icon-caret-down').addClass('icon-caret-left');}}
+				}
+			);
+			$('#left_menu .parent a').click(
+				function () {
+					var p = $(this).parent('li').first();
+					var href = $(this).attr('href');
+					var a = p.find('.arrow').first();
+					if (href=='#'){
+						if (p.hasClass('active')){
+							p.removeClass('active');
+							a.removeClass('icon-caret-down').addClass('icon-caret-left');
+						}
+						else{
+							p.addClass('active');
+							a.removeClass('icon-caret-left').addClass('icon-caret-down');
+						}
+						return false;
+					};
+
+				}
+			);
+		</script>
+		<script>
+			$(".collapse").collapse({toggle: false});
+			$(".collapse").on('show', function () {
+				$(".collapse").collapse('hide'); 
+				$('.icon').removeClass('icon-chevron-right icon-chevron-down').addClass('icon-chevron-right');
+				$(this).parents('.accordion-group').find('.icon').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+			})
+			$(".collapse").on('hide', function () {
+				$('.icon').removeClass('icon-chevron-right icon-chevron-down').addClass('icon-chevron-right');
+			})
+		</script>
+	</body>                    
+</html>

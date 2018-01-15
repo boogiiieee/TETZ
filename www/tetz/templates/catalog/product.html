@@ -1,0 +1,46 @@
+{% extends "default.html" %}
+
+{% load thumbnail %}
+{% load front_admin_tags %}
+
+{% block title %}{{ product.get_title }}{% endblock %}
+{% block description %}{{ product.description }}{% endblock %}
+{% block keywords %}{{ product.keywords }}{% endblock %}
+
+{% block flatpage %}{% endblock %}
+
+{% block breadcrumbs %}
+	<span><a href="/catalog/">Каталог</a></span> <span class="icon-double-angle-right divider"></span>
+	<span><a href="{{ product.category.get_category_url }}">{{ product.category.get_title }}</a></span> <span class="icon-double-angle-right divider"></span>
+	<span class="active">{{ product.get_title }}</span>
+{% endblock %}
+
+{% block content %}
+	{% FrontAdmin product.get_admin_url %}
+	<div class="row-fluid">
+		<h1>{{ product.get_title }}</h1>
+		<div class="media">
+			{% if product.get_image or product.get_code or product.get_file %}
+			<div class="pull-left margin_r">
+				{% if product.get_image %}
+					<a class="thumbnail lightbox" href="{{ product.get_image.url }}" style="float:left">
+						{% thumbnail product.get_image "150x150" format="PNG" as im %}
+							<img class="media-object" src="{{ im.url }}" alt="{{ product.get_title }}" />
+						{% endthumbnail %}
+					</a>
+				{% endif %}
+				{% if product.get_code %}
+					<p class="t_center" style="width:166px;"><strong>Номер в каталоге: {{ product.get_code }}</strong></p>
+				{% endif %}
+				{% if product.get_file %}
+					<p class="t_center"><a class="btn" href="{{ product.get_file.url }}">Скачать файл</a></p>
+				{% endif %}
+			</div>
+			{% endif %}
+			<div class="media-body">
+				{{ product.get_text|safe }}
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

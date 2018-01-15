@@ -1,0 +1,12 @@
+<!--шаблон нижнего меню-->
+
+{% load front_admin_tags article_tags catalog_tags %}
+{% url 'catalog_url' as catalog_url %}
+
+<ul>
+	<li class="{% ifequal request.flatpage.url '/' %}active{% endifequal %}"><i class="icon-caret-right"></i> <a href="/">Главная</a></li>
+	<li class="{% ifequal active 'news' %}active{% endifequal %}"><i class="icon-caret-right"></i> <a href="/news/">Новости</a></li>
+	<li class="{% ifequal request.flatpage.url '/about/' %}active{% endifequal %}"><i class="icon-caret-right"></i> <a href="/about/">О компании</a>
+	<li class="{% ifequal request.flatpage.url '/vakancy/' %}active{% endifequal %}"><i class="icon-caret-right"></i> <a href="/vakancy/">Вакансии</a></li>
+	<li class="{% ifequal active 'category' %}active{% endifequal %}"><i class="icon-caret-right"></i> <a href="{{ catalog_url }}">Каталог</a>
+</ul>
